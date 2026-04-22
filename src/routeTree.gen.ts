@@ -9,16 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WaitlistRouteImport } from './routes/waitlist'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ProgramRouteImport } from './routes/program'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppSubjectsRouteImport } from './routes/app.subjects'
+import { Route as AppProgressRouteImport } from './routes/app.progress'
+import { Route as AppMockTestRouteImport } from './routes/app.mock-test'
+import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppSubjectsSubjectRouteImport } from './routes/app.subjects.$subject'
+import { Route as AppSubjectsSubjectTopicRouteImport } from './routes/app.subjects.$subject.$topic'
 
-const WaitlistRoute = WaitlistRouteImport.update({
-  id: '/waitlist',
-  path: '/waitlist',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgramRoute = ProgramRouteImport.update({
@@ -31,9 +39,19 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -46,69 +64,155 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppSubjectsRoute = AppSubjectsRouteImport.update({
+  id: '/subjects',
+  path: '/subjects',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProgressRoute = AppProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMockTestRoute = AppMockTestRouteImport.update({
+  id: '/mock-test',
+  path: '/mock-test',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSubjectsSubjectRoute = AppSubjectsSubjectRouteImport.update({
+  id: '/$subject',
+  path: '/$subject',
+  getParentRoute: () => AppSubjectsRoute,
+} as any)
+const AppSubjectsSubjectTopicRoute = AppSubjectsSubjectTopicRouteImport.update({
+  id: '/$topic',
+  path: '/$topic',
+  getParentRoute: () => AppSubjectsSubjectRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/app': typeof AppRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
+  '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
   '/program': typeof ProgramRoute
-  '/waitlist': typeof WaitlistRoute
+  '/signup': typeof SignupRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/mock-test': typeof AppMockTestRoute
+  '/app/progress': typeof AppProgressRoute
+  '/app/subjects': typeof AppSubjectsRouteWithChildren
+  '/app/subjects/$subject': typeof AppSubjectsSubjectRouteWithChildren
+  '/app/subjects/$subject/$topic': typeof AppSubjectsSubjectTopicRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/app': typeof AppRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
+  '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
   '/program': typeof ProgramRoute
-  '/waitlist': typeof WaitlistRoute
+  '/signup': typeof SignupRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/mock-test': typeof AppMockTestRoute
+  '/app/progress': typeof AppProgressRoute
+  '/app/subjects': typeof AppSubjectsRouteWithChildren
+  '/app/subjects/$subject': typeof AppSubjectsSubjectRouteWithChildren
+  '/app/subjects/$subject/$topic': typeof AppSubjectsSubjectTopicRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/app': typeof AppRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
+  '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
   '/program': typeof ProgramRoute
-  '/waitlist': typeof WaitlistRoute
+  '/signup': typeof SignupRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/mock-test': typeof AppMockTestRoute
+  '/app/progress': typeof AppProgressRoute
+  '/app/subjects': typeof AppSubjectsRouteWithChildren
+  '/app/subjects/$subject': typeof AppSubjectsSubjectRouteWithChildren
+  '/app/subjects/$subject/$topic': typeof AppSubjectsSubjectTopicRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/app'
     | '/how-it-works'
+    | '/login'
     | '/pricing'
     | '/program'
-    | '/waitlist'
+    | '/signup'
+    | '/app/dashboard'
+    | '/app/mock-test'
+    | '/app/progress'
+    | '/app/subjects'
+    | '/app/subjects/$subject'
+    | '/app/subjects/$subject/$topic'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/how-it-works' | '/pricing' | '/program' | '/waitlist'
+  to:
+    | '/'
+    | '/about'
+    | '/app'
+    | '/how-it-works'
+    | '/login'
+    | '/pricing'
+    | '/program'
+    | '/signup'
+    | '/app/dashboard'
+    | '/app/mock-test'
+    | '/app/progress'
+    | '/app/subjects'
+    | '/app/subjects/$subject'
+    | '/app/subjects/$subject/$topic'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/app'
     | '/how-it-works'
+    | '/login'
     | '/pricing'
     | '/program'
-    | '/waitlist'
+    | '/signup'
+    | '/app/dashboard'
+    | '/app/mock-test'
+    | '/app/progress'
+    | '/app/subjects'
+    | '/app/subjects/$subject'
+    | '/app/subjects/$subject/$topic'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AppRoute: typeof AppRouteWithChildren
   HowItWorksRoute: typeof HowItWorksRoute
+  LoginRoute: typeof LoginRoute
   PricingRoute: typeof PricingRoute
   ProgramRoute: typeof ProgramRoute
-  WaitlistRoute: typeof WaitlistRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/waitlist': {
-      id: '/waitlist'
-      path: '/waitlist'
-      fullPath: '/waitlist'
-      preLoaderRoute: typeof WaitlistRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/program': {
@@ -125,11 +229,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/how-it-works': {
       id: '/how-it-works'
       path: '/how-it-works'
       fullPath: '/how-it-works'
       preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -146,16 +264,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/subjects': {
+      id: '/app/subjects'
+      path: '/subjects'
+      fullPath: '/app/subjects'
+      preLoaderRoute: typeof AppSubjectsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/progress': {
+      id: '/app/progress'
+      path: '/progress'
+      fullPath: '/app/progress'
+      preLoaderRoute: typeof AppProgressRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/mock-test': {
+      id: '/app/mock-test'
+      path: '/mock-test'
+      fullPath: '/app/mock-test'
+      preLoaderRoute: typeof AppMockTestRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/subjects/$subject': {
+      id: '/app/subjects/$subject'
+      path: '/$subject'
+      fullPath: '/app/subjects/$subject'
+      preLoaderRoute: typeof AppSubjectsSubjectRouteImport
+      parentRoute: typeof AppSubjectsRoute
+    }
+    '/app/subjects/$subject/$topic': {
+      id: '/app/subjects/$subject/$topic'
+      path: '/$topic'
+      fullPath: '/app/subjects/$subject/$topic'
+      preLoaderRoute: typeof AppSubjectsSubjectTopicRouteImport
+      parentRoute: typeof AppSubjectsSubjectRoute
+    }
   }
 }
+
+interface AppSubjectsSubjectRouteChildren {
+  AppSubjectsSubjectTopicRoute: typeof AppSubjectsSubjectTopicRoute
+}
+
+const AppSubjectsSubjectRouteChildren: AppSubjectsSubjectRouteChildren = {
+  AppSubjectsSubjectTopicRoute: AppSubjectsSubjectTopicRoute,
+}
+
+const AppSubjectsSubjectRouteWithChildren =
+  AppSubjectsSubjectRoute._addFileChildren(AppSubjectsSubjectRouteChildren)
+
+interface AppSubjectsRouteChildren {
+  AppSubjectsSubjectRoute: typeof AppSubjectsSubjectRouteWithChildren
+}
+
+const AppSubjectsRouteChildren: AppSubjectsRouteChildren = {
+  AppSubjectsSubjectRoute: AppSubjectsSubjectRouteWithChildren,
+}
+
+const AppSubjectsRouteWithChildren = AppSubjectsRoute._addFileChildren(
+  AppSubjectsRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppMockTestRoute: typeof AppMockTestRoute
+  AppProgressRoute: typeof AppProgressRoute
+  AppSubjectsRoute: typeof AppSubjectsRouteWithChildren
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppDashboardRoute: AppDashboardRoute,
+  AppMockTestRoute: AppMockTestRoute,
+  AppProgressRoute: AppProgressRoute,
+  AppSubjectsRoute: AppSubjectsRouteWithChildren,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AppRoute: AppRouteWithChildren,
   HowItWorksRoute: HowItWorksRoute,
+  LoginRoute: LoginRoute,
   PricingRoute: PricingRoute,
   ProgramRoute: ProgramRoute,
-  WaitlistRoute: WaitlistRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

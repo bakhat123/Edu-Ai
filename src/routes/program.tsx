@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 import { CheckCircle2, ArrowRight } from "lucide-react";
+import { subjects } from "@/lib/mockData";
 
 export const Route = createFileRoute("/program")({
   head: () => ({
@@ -14,12 +15,6 @@ export const Route = createFileRoute("/program")({
   }),
   component: Program,
 });
-
-const subjects = {
-  MDCAT: ["Biology", "Chemistry", "Physics", "English", "Logical Reasoning"],
-  ECAT: ["Mathematics", "Physics", "Chemistry / Computer Science", "English"],
-  "University Entry": ["NUST NET", "GIKI Test", "FAST NU", "PIEAS", "IBA Karachi"],
-};
 
 const features = [
   "Topic-level mastery heatmap — green to red",
@@ -35,48 +30,53 @@ const features = [
 function Program() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <section className="bg-hero">
-        <div className="max-w-7xl mx-auto px-6 pt-20 pb-16">
-          <p className="text-emerald text-sm font-semibold tracking-wider uppercase">Stage 1 Program</p>
-          <h1 className="mt-3 font-display text-5xl md:text-6xl font-bold max-w-3xl">Crack MDCAT, ECAT & every major Pakistani entry test.</h1>
+      <SiteHeader />
+      <section className="bg-soft border-b border-border">
+        <div className="max-w-7xl mx-auto px-6 pt-16 pb-14">
+          <p className="text-primary text-sm font-semibold tracking-wide uppercase">Stage 1 Program</p>
+          <h1 className="mt-3 font-display text-5xl md:text-6xl font-bold max-w-3xl text-balance">Crack MDCAT, ECAT & every major Pakistani entry test.</h1>
           <p className="mt-5 text-lg text-muted-foreground max-w-2xl">
-            A complete, adaptive prep environment — calibrated to your weak topics, your pace, and your target university.
+            One adaptive platform — calibrated to your weak topics, your pace, and your target university.
           </p>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-3 gap-6">
-        {Object.entries(subjects).map(([track, list]) => (
-          <div key={track} className="p-6 rounded-2xl bg-card border border-border shadow-card">
-            <h3 className="font-display text-2xl font-bold text-emerald">{track}</h3>
-            <ul className="mt-5 space-y-3">
-              {list.map((s) => (
-                <li key={s} className="flex items-center gap-3 text-sm">
-                  <CheckCircle2 className="w-4 h-4 text-emerald shrink-0" /> {s}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </section>
-
-      <section className="max-w-7xl mx-auto px-6 pb-24">
-        <h2 className="text-4xl font-bold">Everything you need, in one platform.</h2>
-        <div className="mt-10 grid md:grid-cols-2 gap-x-12 gap-y-4">
-          {features.map((f) => (
-            <div key={f} className="flex items-start gap-3 py-3 border-b border-border">
-              <CheckCircle2 className="w-5 h-5 text-emerald mt-0.5 shrink-0" />
-              <span>{f}</span>
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <h2 className="text-3xl font-bold">Subjects covered</h2>
+        <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {subjects.map((s) => (
+            <div key={s.slug} className="p-6 rounded-2xl bg-card border border-border shadow-sm">
+              <div className="text-3xl">{s.icon}</div>
+              <h3 className="mt-3 font-display text-xl font-bold">{s.name}</h3>
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                {s.topics.slice(0, 4).map((t) => (
+                  <li key={t.slug} className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />{t.name}</li>
+                ))}
+                {s.topics.length > 4 && <li className="text-xs">+ {s.topics.length - 4} more topics</li>}
+              </ul>
             </div>
           ))}
         </div>
-        <Link to="/waitlist" className="mt-12 inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-gradient text-emerald-foreground font-semibold shadow-glow">
-          Get early access <ArrowRight className="w-4 h-4" />
-        </Link>
       </section>
 
-      <Footer />
+      <section className="bg-surface border-y border-border">
+        <div className="max-w-7xl mx-auto px-6 py-20">
+          <h2 className="text-3xl font-bold">Everything you need, in one platform.</h2>
+          <div className="mt-10 grid md:grid-cols-2 gap-x-12 gap-y-2">
+            {features.map((f) => (
+              <div key={f} className="flex items-start gap-3 py-3 border-b border-border">
+                <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                <span>{f}</span>
+              </div>
+            ))}
+          </div>
+          <Link to="/signup" className="mt-12 inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-primary-gradient text-primary-foreground font-semibold shadow-soft">
+            Start free <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+
+      <SiteFooter />
     </div>
   );
 }

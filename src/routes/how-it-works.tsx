@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/how-it-works")({
   head: () => ({
@@ -26,22 +26,22 @@ const steps = [
 function HowItWorks() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <section className="bg-hero">
-        <div className="max-w-7xl mx-auto px-6 pt-20 pb-16">
-          <p className="text-emerald text-sm font-semibold tracking-wider uppercase">The Engine</p>
-          <h1 className="mt-3 font-display text-5xl md:text-6xl font-bold max-w-3xl">How EduAI personalizes every minute of study.</h1>
+      <SiteHeader />
+      <section className="bg-soft border-b border-border">
+        <div className="max-w-7xl mx-auto px-6 pt-16 pb-14">
+          <p className="text-primary text-sm font-semibold tracking-wide uppercase">The Engine</p>
+          <h1 className="mt-3 font-display text-5xl md:text-6xl font-bold max-w-3xl text-balance">How EduAI personalizes every minute of study.</h1>
           <p className="mt-5 text-lg text-muted-foreground max-w-2xl">
             Behind every screen is an adaptive learning engine running diagnostics, recommendations and forecasts in real time.
           </p>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-24">
+      <section className="max-w-7xl mx-auto px-6 py-20">
         <div className="grid md:grid-cols-2 gap-6">
           {steps.map((s) => (
-            <div key={s.n} className="relative p-8 rounded-2xl bg-card border border-border shadow-card">
-              <div className="font-display text-5xl font-bold text-emerald/30">{s.n}</div>
+            <div key={s.n} className="p-8 rounded-2xl bg-card border border-border shadow-sm">
+              <div className="font-display text-5xl font-bold text-primary/30">{s.n}</div>
               <h3 className="mt-4 text-xl font-semibold">{s.t}</h3>
               <p className="mt-2 text-muted-foreground">{s.d}</p>
             </div>
@@ -49,7 +49,7 @@ function HowItWorks() {
         </div>
       </section>
 
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }

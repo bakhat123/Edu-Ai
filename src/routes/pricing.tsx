@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 import { Check } from "lucide-react";
 
 export const Route = createFileRoute("/pricing")({
@@ -43,11 +43,11 @@ const tiers = [
 function Pricing() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <section className="bg-hero">
-        <div className="max-w-7xl mx-auto px-6 pt-20 pb-12 text-center">
-          <p className="text-emerald text-sm font-semibold tracking-wider uppercase">Pricing</p>
-          <h1 className="mt-3 font-display text-5xl md:text-6xl font-bold">A fraction of academy fees.</h1>
+      <SiteHeader />
+      <section className="bg-soft border-b border-border">
+        <div className="max-w-7xl mx-auto px-6 pt-16 pb-12 text-center">
+          <p className="text-primary text-sm font-semibold tracking-wide uppercase">Pricing</p>
+          <h1 className="mt-3 font-display text-5xl md:text-6xl font-bold text-balance">A fraction of academy fees.</h1>
           <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
             Transparent pricing. No long contracts. JazzCash, Easypaisa and bank transfer supported.
           </p>
@@ -56,8 +56,8 @@ function Pricing() {
 
       <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-3 gap-6">
         {tiers.map((t) => (
-          <div key={t.name} className={`relative p-8 rounded-2xl border shadow-card ${t.featured ? "border-emerald bg-emerald/5 shadow-glow" : "border-border bg-card"}`}>
-            {t.featured && <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-emerald-gradient text-emerald-foreground text-xs font-bold">MOST POPULAR</div>}
+          <div key={t.name} className={`relative p-8 rounded-2xl border shadow-sm ${t.featured ? "border-2 border-primary bg-accent/30 shadow-elevated" : "border-border bg-card"}`}>
+            {t.featured && <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-primary-gradient text-primary-foreground text-xs font-bold">MOST POPULAR</div>}
             <h3 className="font-display text-2xl font-bold">{t.name}</h3>
             <p className="mt-2 text-sm text-muted-foreground min-h-[2.5rem]">{t.desc}</p>
             <div className="mt-6 flex items-baseline gap-1">
@@ -68,18 +68,18 @@ function Pricing() {
             <ul className="mt-6 space-y-3">
               {t.features.map((f) => (
                 <li key={f} className="flex items-start gap-3 text-sm">
-                  <Check className="w-4 h-4 text-emerald shrink-0 mt-0.5" /> {f}
+                  <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" /> {f}
                 </li>
               ))}
             </ul>
-            <Link to="/waitlist" className={`mt-8 block text-center px-5 py-3 rounded-xl font-semibold transition ${t.featured ? "bg-emerald-gradient text-emerald-foreground" : "border border-border hover:bg-accent"}`}>
-              Join waitlist
+            <Link to="/signup" className={`mt-8 block text-center px-5 py-3 rounded-xl font-semibold transition ${t.featured ? "bg-primary-gradient text-primary-foreground" : "border border-border hover:bg-muted"}`}>
+              Get started
             </Link>
           </div>
         ))}
       </section>
 
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }

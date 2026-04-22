@@ -1,16 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import heroImg from "@/assets/hero-student.jpg";
-import { Brain, Target, Zap, TrendingUp, BookOpen, Users, Sparkles, ArrowRight } from "lucide-react";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
+import studentsImg from "@/assets/students.jpg";
+import { Brain, Target, BookOpen, TrendingUp, ShieldCheck, Sparkles, ArrowRight, CheckCircle2, Star } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "EduAI Pakistan — AI Tutor for MDCAT & ECAT Prep" },
-      { name: "description", content: "Pakistan's first adaptive AI tutor. Personalized MDCAT, ECAT and university entry test prep — from PKR 499/month. Launching July 2026." },
-      { property: "og:title", content: "EduAI Pakistan — AI Tutor for MDCAT & ECAT Prep" },
-      { property: "og:description", content: "Pakistan's first adaptive AI tutor. Personalized MDCAT, ECAT and university entry test prep." },
+      { title: "EduAI Pakistan — A Personal AI Tutor for MDCAT & ECAT" },
+      { name: "description", content: "Pakistan's adaptive AI tutor for MDCAT, ECAT and university entry tests. Personalized lessons, practice MCQs and predicted scores from PKR 499/month." },
+      { property: "og:title", content: "EduAI Pakistan — A Personal AI Tutor for MDCAT & ECAT" },
+      { property: "og:description", content: "Pakistan's adaptive AI tutor for MDCAT and ECAT prep." },
     ],
   }),
   component: Home,
@@ -19,69 +19,79 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <SiteHeader />
 
       {/* Hero */}
-      <section className="relative bg-hero overflow-hidden">
-        <div className="absolute inset-0 grid-pattern opacity-40" />
-        <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-28 grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald/10 border border-emerald/30 text-emerald text-xs font-medium">
-              <Sparkles className="w-3.5 h-3.5" /> Stage 1 — Launching July 2026
+      <section className="relative bg-soft overflow-hidden">
+        <div className="absolute inset-0 dotted-bg opacity-60" />
+        <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-20 grid lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-xs font-semibold">
+              <Sparkles className="w-3.5 h-3.5" /> Stage 1 — MDCAT & ECAT prep · Launching July 2026
             </div>
-            <h1 className="mt-6 font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05]">
-              A personal <span className="text-gradient">AI tutor</span> for every Pakistani student.
+            <h1 className="mt-6 font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] text-balance">
+              Your personal tutor for <span className="text-primary">MDCAT & ECAT.</span>
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-              EduAI adapts to how <em>you</em> learn — adjusting pace, difficulty and explanations in real time. Crack MDCAT, ECAT and university entry tests with a tutor that never sleeps.
+              Stop wasting months on generic academy lectures. EduAI builds a study plan around <em>your</em> weak topics, your pace, and your target score — and updates it every day.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/waitlist" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-gradient text-emerald-foreground font-semibold shadow-glow hover:opacity-90 transition">
-                Join the waitlist <ArrowRight className="w-4 h-4" />
+              <Link to="/signup" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-primary-gradient text-primary-foreground font-semibold shadow-soft hover:shadow-elevated transition">
+                Start free <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link to="/how-it-works" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-border bg-card/40 hover:bg-card transition font-semibold">
+              <Link to="/how-it-works" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-card border border-border hover:bg-muted transition font-semibold">
                 See how it works
               </Link>
             </div>
-            <div className="mt-10 flex items-center gap-8 text-sm text-muted-foreground">
-              <div><div className="text-2xl font-display font-bold text-foreground">PKR 499</div>starting price/month</div>
-              <div className="h-10 w-px bg-border" />
-              <div><div className="text-2xl font-display font-bold text-foreground">5</div>boards covered</div>
-              <div className="h-10 w-px bg-border" />
-              <div><div className="text-2xl font-display font-bold text-foreground">24/7</div>AI availability</div>
+            <div className="mt-10 flex items-center gap-6 text-sm text-muted-foreground">
+              <div className="flex -space-x-2">
+                {[1,2,3,4].map((i) => <div key={i} className="w-8 h-8 rounded-full border-2 border-background bg-primary-gradient text-primary-foreground flex items-center justify-center text-[10px] font-bold">{["AK","FA","SH","ZN"][i-1]}</div>)}
+              </div>
+              <div>
+                <div className="flex items-center gap-1 text-warning">
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-current" />)}
+                </div>
+                <div className="text-xs mt-0.5">Trusted by 1,200+ early access students</div>
+              </div>
             </div>
           </div>
-          <div className="relative">
-            <div className="absolute -inset-6 bg-emerald/20 blur-3xl rounded-full" />
-            <img src={heroImg} alt="Student learning with EduAI" className="relative rounded-2xl shadow-card border border-border" />
+          <div className="lg:col-span-5 relative">
+            <img src={studentsImg} alt="Pakistani students learning together" className="rounded-3xl shadow-elevated border border-border" width={1536} height={1152} />
+            <div className="absolute -bottom-6 -left-6 bg-card rounded-2xl shadow-elevated border border-border p-4 max-w-[200px] hidden md:block">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1"><TrendingUp className="w-3.5 h-3.5 text-success" /> Predicted score</div>
+              <div className="font-display text-3xl font-bold">742<span className="text-base text-muted-foreground">/1100</span></div>
+              <div className="text-xs text-success mt-1">+18 this week</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Problem */}
-      <section className="max-w-7xl mx-auto px-6 py-24">
-        <div className="max-w-3xl">
-          <p className="text-emerald text-sm font-semibold tracking-wider uppercase">The Problem</p>
-          <h2 className="mt-3 text-4xl md:text-5xl font-bold">One teacher cannot teach forty students differently.</h2>
-          <p className="mt-5 text-lg text-muted-foreground">
-            Pakistan's classrooms force every student into the same pace, the same explanation, the same example. Bright students get bored. Struggling students fall behind. Academies cost a fortune. EduAI fixes the root cause — not the symptoms.
-          </p>
+      {/* Logos / boards */}
+      <section className="border-y border-border bg-card">
+        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-sm text-muted-foreground">
+          <span className="font-semibold text-foreground">Covers all boards:</span>
+          {["Punjab", "Federal", "Sindh", "KPK", "Balochistan", "Aga Khan"].map((b) => <span key={b}>{b}</span>)}
         </div>
       </section>
 
       {/* Features */}
-      <section className="max-w-7xl mx-auto px-6 pb-24">
-        <div className="grid md:grid-cols-3 gap-6">
+      <section className="max-w-7xl mx-auto px-6 py-24">
+        <div className="max-w-2xl">
+          <p className="text-primary text-sm font-semibold tracking-wide uppercase">Why EduAI</p>
+          <h2 className="mt-3 text-4xl md:text-5xl font-bold text-balance">Built around how you actually learn.</h2>
+          <p className="mt-4 text-lg text-muted-foreground">Six things that make EduAI different from any academy or YouTube playlist.</p>
+        </div>
+        <div className="mt-12 grid md:grid-cols-3 gap-6">
           {[
-            { icon: Brain, title: "Adaptive AI", desc: "The platform learns your strengths, gaps and preferred explanation style — and rewires every lesson around them." },
-            { icon: Target, title: "Built for Pakistan", desc: "Full MDCAT, ECAT and university entry test syllabus. Punjab, Federal, Sindh, KPK and Balochistan boards." },
-            { icon: Zap, title: "Offline-first", desc: "Designed for 2G/3G areas. Download lesson packs, study anywhere, sync when you're back online." },
-            { icon: TrendingUp, title: "Predicted score", desc: "Live prediction of your MDCAT/ECAT result based on real performance — updated after every quiz." },
-            { icon: BookOpen, title: "Spaced repetition", desc: "Weak topics resurface automatically until they become your strengths. No flashcards required." },
-            { icon: Users, title: "Scholarship system", desc: "Top performers earn fully funded access — talent matters more than your family's income." },
+            { icon: Brain, title: "Adaptive lessons", desc: "We learn your strengths, gaps and preferred explanation style — and rewire every lesson around them." },
+            { icon: Target, title: "Built for Pakistan", desc: "Full MDCAT, ECAT, NUST NET, GIKI and FAST coverage. All five major boards." },
+            { icon: BookOpen, title: "50,000+ MCQs", desc: "AI-curated practice with detailed explanations for every question. Past papers included." },
+            { icon: TrendingUp, title: "Live predicted score", desc: "After every quiz we recompute your projected MDCAT/ECAT score — so you always know where you stand." },
+            { icon: ShieldCheck, title: "Offline-first", desc: "Works on 2G/3G. Download topic packs, study anywhere, sync when you're back." },
+            { icon: Sparkles, title: "Scholarship system", desc: "Top performers get fully funded access. Talent matters more than your family's income." },
           ].map((f) => (
-            <div key={f.title} className="group relative p-6 rounded-2xl bg-card border border-border hover:border-emerald/40 transition shadow-card">
-              <div className="w-11 h-11 rounded-xl bg-emerald/15 text-emerald flex items-center justify-center mb-4 group-hover:bg-emerald-gradient group-hover:text-emerald-foreground transition">
+            <div key={f.title} className="p-7 rounded-2xl bg-card border border-border shadow-sm hover:shadow-soft hover:border-primary/30 transition">
+              <div className="w-11 h-11 rounded-xl bg-accent text-primary flex items-center justify-center mb-5">
                 <f.icon className="w-5 h-5" />
               </div>
               <h3 className="text-lg font-semibold">{f.title}</h3>
@@ -91,46 +101,69 @@ function Home() {
         </div>
       </section>
 
-      {/* Stages */}
-      <section className="max-w-7xl mx-auto px-6 pb-24">
-        <div className="rounded-3xl border border-border bg-card p-10 shadow-card">
-          <p className="text-emerald text-sm font-semibold tracking-wider uppercase">Roadmap</p>
-          <h2 className="mt-2 text-4xl font-bold">Three stages. One mission.</h2>
-          <div className="mt-10 grid md:grid-cols-3 gap-6">
+      {/* How it works */}
+      <section className="bg-surface border-y border-border">
+        <div className="max-w-7xl mx-auto px-6 py-24">
+          <p className="text-primary text-sm font-semibold tracking-wide uppercase text-center">How it works</p>
+          <h2 className="mt-3 text-4xl md:text-5xl font-bold text-center text-balance">From diagnostic to acceptance letter.</h2>
+          <div className="mt-14 grid md:grid-cols-4 gap-6">
             {[
-              { n: "01", t: "MDCAT / ECAT Prep", d: "Entry test mastery for every aspiring doctor and engineer.", date: "July 2026", active: true },
-              { n: "02", t: "Playgroup → Class 8", d: "Adaptive primary education with AI avatar teachers.", date: "Late 2026" },
-              { n: "03", t: "Matric, FSC, O/A-Levels", d: "Full secondary schooling on track for HEC recognition.", date: "Early 2027" },
-            ].map((s) => (
-              <div key={s.n} className={`p-6 rounded-2xl border ${s.active ? "border-emerald/50 bg-emerald/5" : "border-border bg-background/40"}`}>
-                <div className="flex items-baseline justify-between">
-                  <span className="font-display text-3xl font-bold text-emerald">{s.n}</span>
-                  <span className="text-xs text-muted-foreground">{s.date}</span>
+              { n: "1", t: "Take a diagnostic", d: "30-min placement maps every topic of your syllabus." },
+              { n: "2", t: "Get your plan", d: "AI builds a study schedule around your weak topics." },
+              { n: "3", t: "Practice & learn", d: "Adaptive lessons + MCQs with instant feedback." },
+              { n: "4", t: "Track your score", d: "Live predicted MDCAT/ECAT score updated daily." },
+            ].map((s, i) => (
+              <div key={s.n} className="relative">
+                <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-display font-bold">{s.n}</div>
+                  <h3 className="mt-4 font-semibold text-lg">{s.t}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
                 </div>
-                <h3 className="mt-4 text-xl font-semibold">{s.t}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
-                {s.active && <span className="mt-4 inline-flex items-center gap-1.5 text-xs text-emerald font-semibold"><span className="w-1.5 h-1.5 rounded-full bg-emerald animate-pulse" /> Building now</span>}
+                {i < 3 && <ArrowRight className="hidden md:block absolute top-1/2 -right-5 w-5 h-5 text-muted-foreground/40" />}
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Comparison */}
+      <section className="max-w-5xl mx-auto px-6 py-24">
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-balance">EduAI vs traditional academies</h2>
+        <div className="mt-12 grid md:grid-cols-2 gap-6">
+          <div className="rounded-2xl border border-border bg-card p-8">
+            <h3 className="font-display text-xl font-bold text-muted-foreground">Traditional academy</h3>
+            <ul className="mt-5 space-y-3 text-sm text-muted-foreground">
+              {["PKR 25,000–60,000 per month", "Same lecture for 40 students at once", "Travel time + fixed schedule", "No personal weak-topic tracking", "Limited past paper access"].map((p) => (
+                <li key={p} className="flex items-start gap-3"><span className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2" />{p}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="rounded-2xl border-2 border-primary bg-accent/30 p-8 shadow-elevated">
+            <h3 className="font-display text-xl font-bold text-primary">EduAI Pakistan</h3>
+            <ul className="mt-5 space-y-3 text-sm">
+              {["From PKR 499 per month", "Lessons personalized to YOU", "Study anywhere, anytime, offline", "Live mastery heatmap & predicted score", "50,000+ MCQs with explanations"].map((p) => (
+                <li key={p} className="flex items-start gap-3"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />{p}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-6 pb-24">
-        <div className="relative rounded-3xl bg-emerald-gradient p-12 md:p-16 text-emerald-foreground overflow-hidden">
-          <div className="absolute inset-0 grid-pattern opacity-20" />
+        <div className="relative rounded-3xl bg-primary-gradient p-12 md:p-16 text-primary-foreground overflow-hidden">
+          <div className="absolute inset-0 dotted-bg opacity-20" />
           <div className="relative max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-bold">Be among our first 1,000 students.</h2>
-            <p className="mt-4 text-lg opacity-90">Waitlist members get a 50% discount for the first three months and early access to the Stage 1 beta.</p>
-            <Link to="/waitlist" className="mt-8 inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-background text-foreground font-semibold hover:opacity-90 transition">
-              Reserve my spot <ArrowRight className="w-4 h-4" />
+            <h2 className="text-4xl md:text-5xl font-bold text-balance">Be among our first 1,000 students.</h2>
+            <p className="mt-4 text-lg opacity-90">Free to start. 50% off the first three months for early access members.</p>
+            <Link to="/signup" className="mt-8 inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-background text-foreground font-semibold hover:opacity-90 transition shadow-soft">
+              Create my account <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }
