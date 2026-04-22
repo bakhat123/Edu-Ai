@@ -29,14 +29,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Edu Ai" },
+      { name: "description", content: "Startup Launchpad builds a marketing website and functional student application for educational startups." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Edu Ai" },
+      { property: "og:description", content: "Startup Launchpad builds a marketing website and functional student application for educational startups." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Edu Ai" },
+      { name: "twitter:description", content: "Startup Launchpad builds a marketing website and functional student application for educational startups." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8e2bb3b1-b721-4e7b-80d1-8073f47e0f38/id-preview-ab6d5e53--22c7499d-3d93-41a7-92be-5bf1c578fd72.lovable.app-1776884843182.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8e2bb3b1-b721-4e7b-80d1-8073f47e0f38/id-preview-ab6d5e53--22c7499d-3d93-41a7-92be-5bf1c578fd72.lovable.app-1776884843182.png" },
     ],
     links: [
       {
