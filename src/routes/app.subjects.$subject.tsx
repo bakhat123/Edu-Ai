@@ -25,7 +25,8 @@ function masteryColor(m: number) {
 }
 
 function SubjectPage() {
-  const { subject } = Route.useLoaderData();
+  const data = Route.useLoaderData() as ReturnType<typeof getSubject> extends infer S ? { subject: NonNullable<ReturnType<typeof getSubject>> } : never;
+  const { subject } = data;
 
   return (
     <div className="space-y-8 max-w-5xl">

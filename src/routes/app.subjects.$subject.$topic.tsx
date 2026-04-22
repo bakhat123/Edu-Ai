@@ -22,7 +22,8 @@ export const Route = createFileRoute("/app/subjects/$subject/$topic")({
 });
 
 function PracticePage() {
-  const { subject, topic, mcqs } = Route.useLoaderData();
+  const data = Route.useLoaderData() as { subject: NonNullable<ReturnType<typeof getSubject>>; topic: NonNullable<ReturnType<typeof getTopic>>; mcqs: ReturnType<typeof getMCQs> };
+  const { subject, topic, mcqs } = data;
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [revealed, setRevealed] = useState(false);
