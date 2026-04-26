@@ -49,7 +49,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-border space-y-3">
+          <div>
+            <label className="block text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-1.5 px-1">Active Track</label>
+            <select
+              value={activeModule}
+              onChange={(e) => setActiveModule(e.target.value as ModuleKey)}
+              className="w-full text-sm rounded-lg border border-border bg-background px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              {(Object.keys(modules) as ModuleKey[]).map((k) => (
+                <option key={k} value={k}>{modules[k].name} — {modules[k].tone}</option>
+              ))}
+            </select>
+          </div>
           <div className="flex items-center gap-3 px-2 py-2">
             <div className="w-9 h-9 rounded-full bg-primary-gradient text-primary-foreground flex items-center justify-center font-semibold text-sm">{initials}</div>
             <div className="flex-1 min-w-0">
