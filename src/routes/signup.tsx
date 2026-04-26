@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { setUser } from "@/lib/auth";
 import { useState } from "react";
@@ -10,7 +10,6 @@ export const Route = createFileRoute("/signup")({
 });
 
 function Signup() {
-  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [city, setCity] = useState("Lahore");
@@ -18,8 +17,9 @@ function Signup() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    setUser({ name: name || email.split("@")[0], email, city, target });
-    navigate({ to: "/app/dashboard" });
+    const safeEmail = email || "demo@eduai.pk";
+    setUser({ name: name || safeEmail.split("@")[0], email: safeEmail, city, target });
+    window.location.href = "/app/dashboard";
   };
 
   return (
