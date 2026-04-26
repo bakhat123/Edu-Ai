@@ -3,7 +3,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Check, AlertCircle } from "lucide-react";
 import { modules, type ModuleKey } from "@/lib/mockData";
-import { useState } from "react";
+import { useModule } from "@/lib/auth";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -46,7 +46,7 @@ const modulePlans: Record<ModuleKey, Plan[]> = {
 };
 
 function Pricing() {
-  const [active, setActive] = useState<ModuleKey>("mdcat");
+  const [active, setActive] = useModule();
   const m = modules[active];
   const plans = modulePlans[active];
 
