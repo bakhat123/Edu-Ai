@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { setUser } from "@/lib/auth";
 import { useState } from "react";
@@ -10,15 +10,16 @@ export const Route = createFileRoute("/login")({
 });
 
 function Login() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const name = email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) || "Student";
-    setUser({ name, email, target: "MDCAT" });
-    navigate({ to: "/app/dashboard" });
+    const safeEmail = email || "demo@eduai.pk";
+    const name = safeEmail.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) || "Student";
+    setUser({ name, email: safeEmail, target: "MDCAT" });
+    // Hard redirect ensures fresh auth state when /app guard runs
+    window.location.href = "/app/dashboard";
   };
 
   return (
