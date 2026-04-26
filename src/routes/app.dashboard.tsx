@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
-import { studentStats, subjects } from "@/lib/mockData";
-import { Flame, Target, Clock, TrendingUp, ArrowRight, Trophy } from "lucide-react";
+import { studentStats, subjects, dailyReview } from "@/lib/mockData";
+import { Flame, Target, Clock, TrendingUp, ArrowRight, Trophy, Brain, X, Info, Play } from "lucide-react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/app/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — EduAI" }] }),
@@ -13,6 +14,7 @@ function Dashboard() {
   const trend = studentStats.scoreTrend;
   const max = Math.max(...trend);
   const min = Math.min(...trend);
+  const [scoreOpen, setScoreOpen] = useState(false);
 
   return (
     <div className="space-y-8 max-w-6xl">
@@ -21,16 +23,50 @@ function Dashboard() {
         <p className="text-muted-foreground mt-1">Here's where you stand today.</p>
       </div>
 
-      {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Target} label="Predicted score" value={`${studentStats.predictedScore}`} sub={`Target ${studentStats.targetScore}`} accent />
+        <button onClick={() => setScoreOpen(true)} className="text-left rounded-2xl p-5 border border-transparent shadow-sm bg-primary-gradient text-primary-foreground hover:shadow-elevated transition group">
+          <div className="flex items-center justify-between">
+            <div className="w-9 h-9 rounded-lg bg-background/20 flex items-center justify-center"><Target className="w-4 h-4" /></div>
+            <Info className="w-4 h-4 opacity-70 group-hover:opacity-100" />
+          </div>
+          <div className="mt-3 text-xs uppercase tracking-wide opacity-80">Predicted score</div>
+          <div className="mt-1 font-display text-2xl font-bold">{studentStats.predictedScore}</div>
+          <div className="text-xs opacity-80 mt-0.5">Tap for breakdown · Target {studentStats.targetScore}</div>
+        </button>
         <StatCard icon={Flame} label="Streak" value={`${studentStats.streak} days`} sub="Keep it going!" />
         <StatCard icon={Clock} label="Today" value={`${studentStats.studyMinutesToday}m`} sub="Goal: 90m" />
         <StatCard icon={Trophy} label="Rank" value={`#${studentStats.rank}`} sub={`of ${studentStats.totalStudents.toLocaleString()}`} />
       </div>
 
+      {/* Daily Review — spaced repetition */}
+      <div className="rounded-2xl bg-card border border-border p-6 shadow-sm relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-primary/10 -mr-20 -mt-20" />
+        <div className="relative flex items-start justify-between gap-6 flex-wrap">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-primary-gradient text-primary-foreground flex items-center justify-center"><Brain className="w-6 h-6" /></div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="font-display text-xl font-bold">Daily Review</h2>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-warning/15 text-warning font-bold uppercase">Due today</span>
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">~{dailyReview.totalMinutes} mins · spaced repetition prevents knowledge decay.</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {dailyReview.items.slice(0, 3).map((it) => (
+                  <span key={it.topicSlug} className="text-xs px-2.5 py-1 rounded-full bg-accent text-accent-foreground">{it.topicName}</span>
+                ))}
+                {dailyReview.items.length > 3 && (
+                  <span className="text-xs px-2.5 py-1 rounded-full bg-muted text-muted-foreground">+{dailyReview.items.length - 3} more</span>
+                )}
+              </div>
+            </div>
+          </div>
+          <Link to="/app/subjects/$subject/$topic" params={{ subject: "biology", topic: "cell-biology" }} className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-primary-gradient text-primary-foreground font-semibold shadow-soft hover:shadow-elevated transition">
+            <Play className="w-4 h-4" /> Start review
+          </Link>
+        </div>
+      </div>
+
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Score trend */}
         <div className="lg:col-span-2 rounded-2xl bg-card border border-border p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
@@ -52,7 +88,6 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Recent activity */}
         <div className="rounded-2xl bg-card border border-border p-6 shadow-sm">
           <h2 className="font-semibold">Recent activity</h2>
           <div className="mt-4 space-y-3">
@@ -69,7 +104,6 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Continue learning */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold">Continue learning</h2>
@@ -88,7 +122,7 @@ function Dashboard() {
                 <div className="mt-4">
                   <div className="flex justify-between text-xs text-muted-foreground mb-1.5"><span>Mastery</span><span>{avgMastery}%</span></div>
                   <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-primary-gradient rounded-full" style={{ width: `${avgMastery}%` }} />
+                    <div className="h-full rounded-full" style={{ width: `${avgMastery}%`, background: s.color }} />
                   </div>
                 </div>
               </Link>
@@ -96,19 +130,91 @@ function Dashboard() {
           })}
         </div>
       </div>
+
+      {scoreOpen && <ScoreBreakdownModal onClose={() => setScoreOpen(false)} />}
     </div>
   );
 }
 
-function StatCard({ icon: Icon, label, value, sub, accent }: { icon: any; label: string; value: string; sub: string; accent?: boolean }) {
+function ScoreBreakdownModal({ onClose }: { onClose: () => void }) {
+  const b = studentStats.breakdown;
+  const total = b.subjectScores.reduce((a, s) => a + s.contribution, 0) + b.bonus;
   return (
-    <div className={`rounded-2xl p-5 border shadow-sm ${accent ? "bg-primary-gradient text-primary-foreground border-transparent" : "bg-card border-border"}`}>
-      <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${accent ? "bg-background/20" : "bg-accent text-primary"}`}>
+    <div className="fixed inset-0 z-50 bg-foreground/40 backdrop-blur-sm flex items-center justify-center p-4 animate-float-up">
+      <div className="bg-card rounded-2xl shadow-elevated border border-border max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+        <div className="flex items-center justify-between px-6 h-14 border-b border-border bg-primary-gradient text-primary-foreground">
+          <div className="flex items-center gap-2"><Target className="w-5 h-5" /><h3 className="font-semibold">Predicted Score Breakdown</h3></div>
+          <button onClick={onClose}><X className="w-5 h-5" /></button>
+        </div>
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="grid grid-cols-3 gap-3">
+            <Tile label="Predicted" value={String(studentStats.predictedScore)} accent />
+            <Tile label="Target" value={String(studentStats.targetScore)} />
+            <Tile label="Confidence" value={`${Math.round(b.confidence * 100)}%`} />
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-sm mb-3">How we calculate it</h4>
+            <p className="text-sm text-muted-foreground bg-surface p-3 rounded-lg border border-border">{b.formula}</p>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-sm mb-3">Subject contribution</h4>
+            <div className="space-y-3">
+              {b.subjectScores.map((s) => (
+                <div key={s.subject}>
+                  <div className="flex items-center justify-between text-sm mb-1">
+                    <span className="font-medium">{s.subject} <span className="text-xs text-muted-foreground">({s.weight}% weight · {s.accuracy}% acc.)</span></span>
+                    <span className="font-bold">+{s.contribution}</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-muted overflow-hidden">
+                    <div className="h-full bg-primary-gradient" style={{ width: `${(s.contribution / 350) * 100}%` }} />
+                  </div>
+                </div>
+              ))}
+              <div className="flex items-center justify-between pt-3 border-t border-border text-sm">
+                <span>Consistency bonus</span><span className="font-bold text-success">+{b.bonus}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm font-bold">
+                <span>Total</span><span className="text-primary">{total}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="rounded-xl border border-success/30 bg-success/5 p-4">
+              <h4 className="font-semibold text-sm text-success mb-2">💪 Strengths</h4>
+              <ul className="space-y-1 text-sm">{b.strengths.map((s) => <li key={s}>• {s}</li>)}</ul>
+            </div>
+            <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4">
+              <h4 className="font-semibold text-sm text-destructive mb-2">⚠️ Needs work</h4>
+              <ul className="space-y-1 text-sm">{b.weaknesses.map((s) => <li key={s}>• {s}</li>)}</ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Tile({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className={`rounded-xl p-4 text-center ${accent ? "bg-primary-gradient text-primary-foreground" : "bg-surface border border-border"}`}>
+      <div className="text-xs uppercase tracking-wide opacity-80">{label}</div>
+      <div className="font-display text-2xl font-bold mt-1">{value}</div>
+    </div>
+  );
+}
+
+function StatCard({ icon: Icon, label, value, sub }: { icon: any; label: string; value: string; sub: string }) {
+  return (
+    <div className="rounded-2xl p-5 border shadow-sm bg-card border-border">
+      <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-accent text-primary">
         <Icon className="w-4 h-4" />
       </div>
-      <div className="mt-3 text-xs uppercase tracking-wide opacity-80">{label}</div>
+      <div className="mt-3 text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
       <div className="mt-1 font-display text-2xl font-bold">{value}</div>
-      <div className={`text-xs mt-0.5 ${accent ? "opacity-80" : "text-muted-foreground"}`}>{sub}</div>
+      <div className="text-xs mt-0.5 text-muted-foreground">{sub}</div>
     </div>
   );
 }

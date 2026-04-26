@@ -1,13 +1,16 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { GraduationCap, LayoutDashboard, BookOpen, BarChart3, Trophy, LogOut, Menu, X } from "lucide-react";
+import { GraduationCap, LayoutDashboard, BookOpen, BarChart3, Trophy, LogOut, Menu, X, FileText, Crown } from "lucide-react";
 import { useAuth, setUser } from "@/lib/auth";
 import { useState } from "react";
+import { AiTutor } from "@/components/AiTutor";
 
 const nav = [
   { to: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/app/subjects", label: "Subjects", icon: BookOpen },
-  { to: "/app/progress", label: "Progress", icon: BarChart3 },
+  { to: "/app/past-papers", label: "Past Papers", icon: FileText },
   { to: "/app/mock-test", label: "Mock Test", icon: Trophy },
+  { to: "/app/progress", label: "Progress", icon: BarChart3 },
+  { to: "/app/leaderboard", label: "Leaderboard", icon: Crown },
 ] as const;
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -20,7 +23,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-surface flex">
-      {/* Sidebar */}
       <aside className={`fixed lg:sticky lg:top-0 z-40 h-screen w-64 bg-card border-r border-border flex-shrink-0 flex flex-col transition-transform ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
         <Link to="/" className="flex items-center gap-2 font-display font-bold text-lg px-6 h-16 border-b border-border">
           <span className="w-8 h-8 rounded-lg bg-primary-gradient flex items-center justify-center text-primary-foreground">
@@ -28,7 +30,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </span>
           EduAI
         </Link>
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           {nav.map((item) => {
             const active = path.startsWith(item.to);
             return (
@@ -58,7 +60,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      {/* Mobile overlay */}
       {open && <div onClick={() => setOpen(false)} className="fixed inset-0 z-30 bg-foreground/30 lg:hidden" />}
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -71,6 +72,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </header>
         <main className="flex-1 p-6 lg:p-10">{children}</main>
       </div>
+
+      {/* Floating AI tutor — sole companion across the app */}
+      <AiTutor />
     </div>
   );
 }

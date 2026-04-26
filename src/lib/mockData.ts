@@ -3,12 +3,13 @@ export type Subject = {
   name: string;
   color: string;
   icon: string;
+  module: ModuleKey;
   topics: Topic[];
 };
 export type Topic = {
   slug: string;
   name: string;
-  mastery: number; // 0..100
+  mastery: number;
   questions: number;
 };
 export type MCQ = {
@@ -20,12 +21,19 @@ export type MCQ = {
   explanation: string;
 };
 
+export type ModuleKey = "mdcat" | "ecat" | "nts" | "net" | "css";
+
+export const modules: Record<ModuleKey, { name: string; tone: string; accentClass: string; description: string }> = {
+  mdcat: { name: "MDCAT", tone: "Caring · Medical", accentClass: "module-mdcat", description: "Medical college admission test prep." },
+  ecat:  { name: "ECAT",  tone: "Focused · Engineering", accentClass: "module-ecat",  description: "Engineering college admission test prep." },
+  nts:   { name: "NTS",   tone: "Academic · Trusting",  accentClass: "module-nts",   description: "National testing service prep." },
+  net:   { name: "NUST NET", tone: "Premium · STEM",     accentClass: "module-net",   description: "NUST entrance test, modular by part." },
+  css:   { name: "CSS",   tone: "Prestige · Civil",     accentClass: "module-css",   description: "Central superior services exam." },
+};
+
 export const subjects: Subject[] = [
   {
-    slug: "biology",
-    name: "Biology",
-    color: "oklch(0.65 0.16 145)",
-    icon: "🧬",
+    slug: "biology", name: "Biology", color: "oklch(0.55 0.18 25)", icon: "🧬", module: "mdcat",
     topics: [
       { slug: "cell-biology", name: "Cell Biology", mastery: 78, questions: 240 },
       { slug: "genetics", name: "Genetics & Inheritance", mastery: 54, questions: 180 },
@@ -35,10 +43,7 @@ export const subjects: Subject[] = [
     ],
   },
   {
-    slug: "chemistry",
-    name: "Chemistry",
-    color: "oklch(0.7 0.16 60)",
-    icon: "⚗️",
+    slug: "chemistry", name: "Chemistry", color: "oklch(0.5 0.17 200)", icon: "⚗️", module: "ecat",
     topics: [
       { slug: "atomic-structure", name: "Atomic Structure", mastery: 65, questions: 200 },
       { slug: "chemical-bonding", name: "Chemical Bonding", mastery: 71, questions: 180 },
@@ -47,10 +52,7 @@ export const subjects: Subject[] = [
     ],
   },
   {
-    slug: "physics",
-    name: "Physics",
-    color: "oklch(0.6 0.18 250)",
-    icon: "⚛️",
+    slug: "physics", name: "Physics", color: "oklch(0.5 0.17 200)", icon: "⚛️", module: "ecat",
     topics: [
       { slug: "mechanics", name: "Mechanics", mastery: 72, questions: 260 },
       { slug: "electricity", name: "Electricity & Magnetism", mastery: 48, questions: 220 },
@@ -59,10 +61,7 @@ export const subjects: Subject[] = [
     ],
   },
   {
-    slug: "english",
-    name: "English",
-    color: "oklch(0.65 0.15 30)",
-    icon: "📘",
+    slug: "english", name: "English", color: "oklch(0.5 0.16 290)", icon: "📘", module: "nts",
     topics: [
       { slug: "grammar", name: "Grammar", mastery: 82, questions: 200 },
       { slug: "vocabulary", name: "Vocabulary", mastery: 70, questions: 300 },
@@ -70,10 +69,7 @@ export const subjects: Subject[] = [
     ],
   },
   {
-    slug: "logical-reasoning",
-    name: "Logical Reasoning",
-    color: "oklch(0.6 0.14 290)",
-    icon: "🧠",
+    slug: "logical-reasoning", name: "Logical Reasoning", color: "oklch(0.5 0.16 290)", icon: "🧠", module: "nts",
     topics: [
       { slug: "analytical", name: "Analytical Reasoning", mastery: 58, questions: 160 },
       { slug: "verbal", name: "Verbal Reasoning", mastery: 66, questions: 140 },
@@ -81,7 +77,6 @@ export const subjects: Subject[] = [
   },
 ];
 
-// Question bank — keyed by topic slug
 export const mcqBank: Record<string, MCQ[]> = {
   "cell-biology": [
     { id: "cb1", topic: "cell-biology", question: "Which organelle is known as the powerhouse of the cell?", options: ["Nucleus", "Mitochondria", "Ribosome", "Golgi apparatus"], answer: 1, explanation: "Mitochondria produce ATP through cellular respiration, hence 'powerhouse'." },
@@ -114,7 +109,7 @@ export const mcqBank: Record<string, MCQ[]> = {
     { id: "cbo1", topic: "chemical-bonding", question: "Which has the strongest hydrogen bonding?", options: ["HCl", "HF", "HBr", "HI"], answer: 1, explanation: "HF has the strongest H-bonding due to fluorine's high electronegativity." },
   ],
   "organic": [
-    { id: "o1", topic: "organic", question: "Markovnikov's rule applies to:", options: ["Symmetrical alkenes", "Unsymmetrical alkenes with HX", "Alkanes", "Aromatic compounds"], answer: 1, explanation: "The H of HX attaches to the carbon with more H atoms (the 'rich get richer')." },
+    { id: "o1", topic: "organic", question: "Markovnikov's rule applies to:", options: ["Symmetrical alkenes", "Unsymmetrical alkenes with HX", "Alkanes", "Aromatic compounds"], answer: 1, explanation: "The H of HX attaches to the carbon with more H atoms." },
     { id: "o2", topic: "organic", question: "The functional group of an aldehyde is:", options: ["-COOH", "-CHO", "-OH", "-NH2"], answer: 1, explanation: "Aldehydes contain a -CHO group." },
   ],
   "thermodynamics": [
@@ -151,20 +146,49 @@ export const mcqBank: Record<string, MCQ[]> = {
   ],
 };
 
-export function getMCQs(topic: string): MCQ[] {
-  return mcqBank[topic] || [];
-}
-export function getSubject(slug: string) {
-  return subjects.find((s) => s.slug === slug);
-}
-export function getTopic(subjectSlug: string, topicSlug: string) {
-  return getSubject(subjectSlug)?.topics.find((t) => t.slug === topicSlug);
-}
-export function allMCQs(): MCQ[] {
-  return Object.values(mcqBank).flat();
-}
+export function getMCQs(topic: string): MCQ[] { return mcqBank[topic] || []; }
+export function getSubject(slug: string) { return subjects.find((s) => s.slug === slug); }
+export function getTopic(subjectSlug: string, topicSlug: string) { return getSubject(subjectSlug)?.topics.find((t) => t.slug === topicSlug); }
+export function allMCQs(): MCQ[] { return Object.values(mcqBank).flat(); }
 
-// Mock student stats
+// Spaced repetition / daily review queue — keeps knowledge alive
+export type ReviewItem = { topicSlug: string; topicName: string; subject: string; lastSeen: string; dueIn: string; questions: number };
+export const dailyReview: { totalMinutes: number; items: ReviewItem[] } = {
+  totalMinutes: 12,
+  items: [
+    { topicSlug: "cell-biology", topicName: "Cell Biology", subject: "Biology", lastSeen: "3 days ago", dueIn: "Today", questions: 5 },
+    { topicSlug: "mechanics", topicName: "Mechanics", subject: "Physics", lastSeen: "5 days ago", dueIn: "Today", questions: 4 },
+    { topicSlug: "organic", topicName: "Organic Chemistry", subject: "Chemistry", lastSeen: "1 week ago", dueIn: "Today", questions: 6 },
+    { topicSlug: "grammar", topicName: "Grammar", subject: "English", lastSeen: "4 days ago", dueIn: "Tomorrow", questions: 3 },
+  ],
+};
+
+// Past papers — by year
+export type PastPaper = { year: number; module: ModuleKey; questions: number; attempts: number; topQuestions: string[] };
+export const pastPapers: PastPaper[] = [
+  { year: 2024, module: "mdcat", questions: 200, attempts: 4821, topQuestions: ["Cell Biology", "Genetics", "Mechanics"] },
+  { year: 2023, module: "mdcat", questions: 200, attempts: 12480, topQuestions: ["Physiology", "Organic", "Optics"] },
+  { year: 2022, module: "mdcat", questions: 200, attempts: 18290, topQuestions: ["Biotech", "Bonding", "Waves"] },
+  { year: 2021, module: "mdcat", questions: 200, attempts: 24105, topQuestions: ["Ecology", "Thermodynamics", "Modern"] },
+  { year: 2024, module: "ecat", questions: 100, attempts: 3210, topQuestions: ["Mechanics", "Bonding", "Calculus"] },
+  { year: 2023, module: "ecat", questions: 100, attempts: 9874, topQuestions: ["Optics", "Organic", "Algebra"] },
+  { year: 2024, module: "nts", questions: 100, attempts: 5610, topQuestions: ["Verbal", "Quant", "Analytical"] },
+  { year: 2023, module: "net", questions: 200, attempts: 7402, topQuestions: ["Physics", "Maths", "English"] },
+];
+
+// Leaderboard
+export type LeaderboardEntry = { rank: number; name: string; city: string; score: number; streak: number; isYou?: boolean };
+export const leaderboard: LeaderboardEntry[] = [
+  { rank: 1, name: "Aisha Khan", city: "Lahore", score: 982, streak: 67 },
+  { rank: 2, name: "Hamza Sheikh", city: "Karachi", score: 974, streak: 45 },
+  { rank: 3, name: "Fatima Ali", city: "Islamabad", score: 968, streak: 89 },
+  { rank: 4, name: "Bilal Ahmed", city: "Peshawar", score: 951, streak: 32 },
+  { rank: 5, name: "Zara Naveed", city: "Multan", score: 943, streak: 51 },
+  { rank: 6, name: "Usman Tariq", city: "Faisalabad", score: 938, streak: 28 },
+  { rank: 7, name: "Maryam Shah", city: "Quetta", score: 925, streak: 41 },
+  { rank: 287, name: "You", city: "Lahore", score: 742, streak: 12, isYou: true },
+];
+
 export const studentStats = {
   predictedScore: 742,
   targetScore: 850,
@@ -181,4 +205,18 @@ export const studentStats = {
     { topic: "Grammar", score: "10/10", time: "2 days ago" },
   ],
   scoreTrend: [620, 645, 660, 680, 695, 710, 725, 742],
+  // Predicted-score breakdown
+  breakdown: {
+    formula: "Weighted accuracy across last 30 quizzes × subject weight in MDCAT × consistency bonus",
+    subjectScores: [
+      { subject: "Biology", weight: 45, accuracy: 74, contribution: 333 },
+      { subject: "Chemistry", weight: 25, accuracy: 58, contribution: 145 },
+      { subject: "Physics", weight: 20, accuracy: 62, contribution: 124 },
+      { subject: "English", weight: 10, accuracy: 80, contribution: 80 },
+    ],
+    bonus: 60,
+    strengths: ["Ecology (88%)", "Grammar (82%)", "Cell Biology (78%)"],
+    weaknesses: ["Modern Physics (30%)", "Biotechnology (35%)", "Organic Chemistry (38%)"],
+    confidence: 0.84,
+  },
 };
