@@ -1,7 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getSubject, getTopic, getMCQs } from "@/lib/mockData";
 import { useMemo, useState } from "react";
-import { ArrowLeft, CheckCircle2, XCircle, ArrowRight, Trophy, RotateCcw } from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle, ArrowRight, Trophy, RotateCcw, Sparkles } from "lucide-react";
+import { QuizReviewModal, type QuizReviewItem } from "@/components/AiTutor";
 
 export const Route = createFileRoute("/app/subjects/$subject/$topic")({
   head: ({ params }) => ({ meta: [{ title: `${params.topic} practice — EduAI` }] }),
@@ -29,21 +30,25 @@ function PracticePage() {
   const [revealed, setRevealed] = useState(false);
   const [correct, setCorrect] = useState(0);
   const [done, setDone] = useState(false);
+  const [picks, setPicks] = useState<(number | null)[]>([]);
+  const [showReview, setShowReview] = useState(false);
   const total = mcqs.length;
   const q = mcqs[idx];
 
   const submit = () => {
     if (picked === null) return;
     setRevealed(true);
+    setPicks((p) => { const n = [...p]; n[idx] = picked; return n; });
     if (picked === q.answer) setCorrect((c) => c + 1);
   };
   const next = () => {
-    if (idx + 1 >= total) { setDone(true); return; }
+    if (idx + 1 >= total) { setDone(true); setShowReview(true); return; }
     setIdx(idx + 1);
     setPicked(null);
     setRevealed(false);
   };
-  const restart = () => { setIdx(0); setPicked(null); setRevealed(false); setCorrect(0); setDone(false); };
+  const restart = () => { setIdx(0); setPicked(null); setRevealed(false); setCorrect(0); setDone(false); setPicks([]); setShowReview(false); };
+  const reviewItems: QuizReviewItem[] = mcqs.map((m, i) => ({ question: m.question, options: m.options, correct: m.answer, picked: picks[i] ?? null, explanation: m.explanation }));
 
   const progress = useMemo(() => ((idx + (revealed ? 1 : 0)) / total) * 100, [idx, revealed, total]);
 
@@ -61,14 +66,18 @@ function PracticePage() {
           <Stat label="Accuracy" value={`${pct}%`} />
           <Stat label="Mastery +" value={`+${Math.round(pct / 10)}%`} />
         </div>
-        <div className="mt-8 flex gap-3 justify-center">
+        <div className="mt-8 flex gap-3 justify-center flex-wrap">
+          <button onClick={() => setShowReview(true)} className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-primary-gradient text-primary-foreground font-semibold shadow-soft">
+            <Sparkles className="w-4 h-4" /> Open AI review
+          </button>
           <button onClick={restart} className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-card border border-border font-semibold hover:bg-muted transition">
             <RotateCcw className="w-4 h-4" /> Try again
           </button>
-          <Link to="/app/subjects/$subject" params={{ subject: subject.slug }} className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-primary-gradient text-primary-foreground font-semibold shadow-soft">
+          <Link to="/app/subjects/$subject" params={{ subject: subject.slug }} className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-card border border-border font-semibold hover:bg-muted transition">
             Next topic <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+        {showReview && <QuizReviewModal items={reviewItems} onClose={() => setShowReview(false)} />}
       </div>
     );
   }
