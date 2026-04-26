@@ -118,6 +118,21 @@
   .module-css   { --m: var(--module-css);   --m-soft: var(--module-css-soft); }
 }
 
+/* When a module class is applied to a container (e.g. AppShell root or pricing),
+   re-skin all primary/accent tokens so the entire UI follows the module identity. */
+.module-mdcat, .module-ecat, .module-nts, .module-net, .module-css {
+  --primary: var(--m);
+  --ring: var(--m);
+  --secondary: var(--m-soft);
+  --secondary-foreground: var(--m);
+  --accent: var(--m-soft);
+  --accent-foreground: var(--m);
+  --gradient-primary: linear-gradient(135deg, var(--m), color-mix(in oklab, var(--m) 70%, white));
+  --gradient-hero: radial-gradient(ellipse at top, var(--m-soft) 0%, var(--background) 60%);
+  --shadow-lg: 0 20px 50px -20px color-mix(in oklab, var(--m) 40%, transparent);
+  --shadow-glow: 0 0 0 4px color-mix(in oklab, var(--m) 18%, transparent);
+}
+
 @keyframes float-up {
   from { opacity: 0; transform: translateY(20px) scale(0.95); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
