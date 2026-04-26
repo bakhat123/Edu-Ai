@@ -72,9 +72,10 @@ function Pricing() {
             return (
               <button
                 key={k}
+                type="button"
                 onClick={() => setActive(k)}
-                className={`px-4 py-2.5 rounded-full text-sm font-semibold border-2 transition ${mod.accentClass}`}
-                style={isActive ? { background: "var(--m)", color: "white", borderColor: "var(--m)" } : { borderColor: "var(--border)", background: "var(--card)" }}
+                className={`px-4 py-2.5 rounded-full text-sm font-semibold border-2 transition cursor-pointer ${mod.accentClass} ${isActive ? "text-white shadow-elevated" : "bg-card hover:bg-soft"}`}
+                style={isActive ? { background: "var(--m)", borderColor: "var(--m)" } : { borderColor: "var(--border)" }}
               >
                 {mod.name}
               </button>
