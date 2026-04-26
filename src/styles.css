@@ -38,35 +38,51 @@
 
 :root {
   --radius: 0.875rem;
-  --background: oklch(0.99 0.005 120);
-  --foreground: oklch(0.18 0.02 160);
-  --surface: oklch(0.97 0.01 145);
+  /* Premium educational blue palette — caring, trustworthy, focused */
+  --background: oklch(0.99 0.005 250);
+  --foreground: oklch(0.18 0.04 255);
+  --surface: oklch(0.97 0.012 250);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.02 160);
+  --card-foreground: oklch(0.18 0.04 255);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 160);
-  /* Deep academic green */
-  --primary: oklch(0.42 0.13 155);
-  --primary-foreground: oklch(0.99 0.005 120);
-  --secondary: oklch(0.95 0.025 145);
-  --secondary-foreground: oklch(0.32 0.1 155);
-  --muted: oklch(0.96 0.01 145);
-  --muted-foreground: oklch(0.46 0.02 160);
-  --accent: oklch(0.93 0.05 145);
-  --accent-foreground: oklch(0.32 0.1 155);
+  --popover-foreground: oklch(0.18 0.04 255);
+
+  /* Deep premium indigo-blue */
+  --primary: oklch(0.45 0.17 258);
+  --primary-foreground: oklch(0.99 0.005 250);
+  --secondary: oklch(0.95 0.025 250);
+  --secondary-foreground: oklch(0.32 0.13 258);
+  --muted: oklch(0.96 0.012 250);
+  --muted-foreground: oklch(0.48 0.03 255);
+  --accent: oklch(0.93 0.045 250);
+  --accent-foreground: oklch(0.32 0.13 258);
   --destructive: oklch(0.6 0.21 25);
   --destructive-foreground: oklch(0.99 0 0);
   --success: oklch(0.62 0.16 155);
   --warning: oklch(0.78 0.15 75);
-  --border: oklch(0.91 0.01 150);
-  --input: oklch(0.94 0.01 150);
-  --ring: oklch(0.42 0.13 155);
+  --border: oklch(0.91 0.012 250);
+  --input: oklch(0.94 0.012 250);
+  --ring: oklch(0.45 0.17 258);
 
-  --gradient-primary: linear-gradient(135deg, oklch(0.42 0.13 155), oklch(0.5 0.14 160));
-  --gradient-soft: linear-gradient(180deg, oklch(0.97 0.025 145), oklch(0.99 0.005 120));
-  --shadow-sm: 0 1px 2px oklch(0.18 0.02 160 / 0.05);
-  --shadow-md: 0 4px 16px -4px oklch(0.18 0.02 160 / 0.08);
-  --shadow-lg: 0 20px 50px -20px oklch(0.42 0.13 155 / 0.18);
+  /* Per-module accent palette — consistent layout, varied identity */
+  --module-mdcat: oklch(0.55 0.18 25);     /* warm caring red — medical */
+  --module-mdcat-soft: oklch(0.95 0.04 25);
+  --module-ecat: oklch(0.5 0.17 200);      /* cyan-teal — engineering */
+  --module-ecat-soft: oklch(0.95 0.04 200);
+  --module-nts: oklch(0.5 0.16 290);       /* indigo violet — academic */
+  --module-nts-soft: oklch(0.95 0.04 290);
+  --module-net: oklch(0.5 0.16 145);       /* trustworthy green — NUST NET */
+  --module-net-soft: oklch(0.95 0.04 145);
+  --module-css: oklch(0.5 0.16 60);        /* gold — civil services */
+  --module-css-soft: oklch(0.96 0.05 80);
+
+  --gradient-primary: linear-gradient(135deg, oklch(0.45 0.17 258), oklch(0.55 0.16 240));
+  --gradient-soft: linear-gradient(180deg, oklch(0.97 0.025 250), oklch(0.99 0.005 250));
+  --gradient-hero: radial-gradient(ellipse at top, oklch(0.93 0.06 250) 0%, oklch(0.99 0.005 250) 60%);
+  --shadow-sm: 0 1px 2px oklch(0.18 0.04 255 / 0.05);
+  --shadow-md: 0 4px 16px -4px oklch(0.18 0.04 255 / 0.08);
+  --shadow-lg: 0 20px 50px -20px oklch(0.45 0.17 258 / 0.22);
+  --shadow-glow: 0 0 0 4px oklch(0.45 0.17 258 / 0.12);
 }
 
 @layer base {
@@ -83,12 +99,27 @@
 
 @layer utilities {
   .bg-soft { background: var(--gradient-soft); }
+  .bg-hero { background: var(--gradient-hero); }
   .bg-primary-gradient { background: var(--gradient-primary); }
   .shadow-soft { box-shadow: var(--shadow-md); }
   .shadow-elevated { box-shadow: var(--shadow-lg); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
   .text-balance { text-wrap: balance; }
   .dotted-bg {
-    background-image: radial-gradient(oklch(0.42 0.13 155 / 0.08) 1px, transparent 1px);
+    background-image: radial-gradient(oklch(0.45 0.17 258 / 0.08) 1px, transparent 1px);
     background-size: 20px 20px;
   }
+
+  /* Module accent helpers — apply to badges/cards */
+  .module-mdcat { --m: var(--module-mdcat); --m-soft: var(--module-mdcat-soft); }
+  .module-ecat  { --m: var(--module-ecat);  --m-soft: var(--module-ecat-soft); }
+  .module-nts   { --m: var(--module-nts);   --m-soft: var(--module-nts-soft); }
+  .module-net   { --m: var(--module-net);   --m-soft: var(--module-net-soft); }
+  .module-css   { --m: var(--module-css);   --m-soft: var(--module-css-soft); }
 }
+
+@keyframes float-up {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-float-up { animation: float-up 0.25s ease-out; }

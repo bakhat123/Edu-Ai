@@ -19,7 +19,9 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppSubjectsRouteImport } from './routes/app.subjects'
 import { Route as AppProgressRouteImport } from './routes/app.progress'
+import { Route as AppPastPapersRouteImport } from './routes/app.past-papers'
 import { Route as AppMockTestRouteImport } from './routes/app.mock-test'
+import { Route as AppLeaderboardRouteImport } from './routes/app.leaderboard'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppSubjectsSubjectRouteImport } from './routes/app.subjects.$subject'
 import { Route as AppSubjectsSubjectTopicRouteImport } from './routes/app.subjects.$subject.$topic'
@@ -74,9 +76,19 @@ const AppProgressRoute = AppProgressRouteImport.update({
   path: '/progress',
   getParentRoute: () => AppRoute,
 } as any)
+const AppPastPapersRoute = AppPastPapersRouteImport.update({
+  id: '/past-papers',
+  path: '/past-papers',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMockTestRoute = AppMockTestRouteImport.update({
   id: '/mock-test',
   path: '/mock-test',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLeaderboardRoute = AppLeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
   getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
@@ -105,7 +117,9 @@ export interface FileRoutesByFullPath {
   '/program': typeof ProgramRoute
   '/signup': typeof SignupRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/leaderboard': typeof AppLeaderboardRoute
   '/app/mock-test': typeof AppMockTestRoute
+  '/app/past-papers': typeof AppPastPapersRoute
   '/app/progress': typeof AppProgressRoute
   '/app/subjects': typeof AppSubjectsRouteWithChildren
   '/app/subjects/$subject': typeof AppSubjectsSubjectRouteWithChildren
@@ -121,7 +135,9 @@ export interface FileRoutesByTo {
   '/program': typeof ProgramRoute
   '/signup': typeof SignupRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/leaderboard': typeof AppLeaderboardRoute
   '/app/mock-test': typeof AppMockTestRoute
+  '/app/past-papers': typeof AppPastPapersRoute
   '/app/progress': typeof AppProgressRoute
   '/app/subjects': typeof AppSubjectsRouteWithChildren
   '/app/subjects/$subject': typeof AppSubjectsSubjectRouteWithChildren
@@ -138,7 +154,9 @@ export interface FileRoutesById {
   '/program': typeof ProgramRoute
   '/signup': typeof SignupRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/leaderboard': typeof AppLeaderboardRoute
   '/app/mock-test': typeof AppMockTestRoute
+  '/app/past-papers': typeof AppPastPapersRoute
   '/app/progress': typeof AppProgressRoute
   '/app/subjects': typeof AppSubjectsRouteWithChildren
   '/app/subjects/$subject': typeof AppSubjectsSubjectRouteWithChildren
@@ -156,7 +174,9 @@ export interface FileRouteTypes {
     | '/program'
     | '/signup'
     | '/app/dashboard'
+    | '/app/leaderboard'
     | '/app/mock-test'
+    | '/app/past-papers'
     | '/app/progress'
     | '/app/subjects'
     | '/app/subjects/$subject'
@@ -172,7 +192,9 @@ export interface FileRouteTypes {
     | '/program'
     | '/signup'
     | '/app/dashboard'
+    | '/app/leaderboard'
     | '/app/mock-test'
+    | '/app/past-papers'
     | '/app/progress'
     | '/app/subjects'
     | '/app/subjects/$subject'
@@ -188,7 +210,9 @@ export interface FileRouteTypes {
     | '/program'
     | '/signup'
     | '/app/dashboard'
+    | '/app/leaderboard'
     | '/app/mock-test'
+    | '/app/past-papers'
     | '/app/progress'
     | '/app/subjects'
     | '/app/subjects/$subject'
@@ -278,11 +302,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProgressRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/past-papers': {
+      id: '/app/past-papers'
+      path: '/past-papers'
+      fullPath: '/app/past-papers'
+      preLoaderRoute: typeof AppPastPapersRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/mock-test': {
       id: '/app/mock-test'
       path: '/mock-test'
       fullPath: '/app/mock-test'
       preLoaderRoute: typeof AppMockTestRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/leaderboard': {
+      id: '/app/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/app/leaderboard'
+      preLoaderRoute: typeof AppLeaderboardRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/dashboard': {
@@ -334,14 +372,18 @@ const AppSubjectsRouteWithChildren = AppSubjectsRoute._addFileChildren(
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppLeaderboardRoute: typeof AppLeaderboardRoute
   AppMockTestRoute: typeof AppMockTestRoute
+  AppPastPapersRoute: typeof AppPastPapersRoute
   AppProgressRoute: typeof AppProgressRoute
   AppSubjectsRoute: typeof AppSubjectsRouteWithChildren
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppLeaderboardRoute: AppLeaderboardRoute,
   AppMockTestRoute: AppMockTestRoute,
+  AppPastPapersRoute: AppPastPapersRoute,
   AppProgressRoute: AppProgressRoute,
   AppSubjectsRoute: AppSubjectsRouteWithChildren,
 }
